@@ -1,0 +1,63 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+*.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# Static files collected (don't commit collections unless desired)
+/staticfiles/
+/.cache/
+
+# Environment variables
+.env
+*.env
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python specific
+*.pyo
+*.pyd
+
+# Compiled JS/CSS bundles
+*.min.js
+*.min.css
+
+# Node modules
+node_modules/

@@ -1,0 +1,57 @@
+{% extends 'libros/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Libros en mi colección</h3>
+  <div>
+    <a href="{% url 'libros:export_excel' %}" class="btn btn-outline-primary no-print">Exportar a Excel</a>
+    <button class="btn btn-outline-secondary no-print" onclick="window.print()">Imprimir</button>
+  </div>
+</div>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Portada</th>
+      <th>Título</th>
+      {% comment %} sortable by authors and genre {% endcomment %}
+      <th>
+        <a href="{% url 'libros:list_books' %}?sort=authors&dir={{ next_dir_authors }}">Autores {{ arrow_authors }}</a>
+      </th>
+      <th>
+        <a href="{% url 'libros:list_books' %}?sort=genre&dir={{ next_dir_genre }}">Género {{ arrow_genre }}</a>
+      </th>
+      <th>ISBN</th>
+      <th>Publicado</th>
+      <th>Páginas</th>
+      <th>Registrado</th>
+      <th class="no-print">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <td style="width:100px;">
+        {% if book.cover_url %}
+          <img src="{{ book.cover_url }}" alt="portada" style="max-width:80px;">
+        {% endif %}
+      </td>
+      <td>{{ book.title }}</td>
+      <td>{{ book.authors }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>{{ book.published_date }}</td>
+      <td>{{ book.number_of_pages }}</td>
+      <td>{{ book.created_at|date:"Y-m-d H:i" }}</td>
+      <td class="no-print">
+        <form method="post" action="{% url 'libros:delete_book' book.pk %}" onsubmit="return confirm('¿Seguro que deseas borrar este libro?');">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-danger">Borrar</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">No hay libros registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

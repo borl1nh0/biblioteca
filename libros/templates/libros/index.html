@@ -1,0 +1,44 @@
+{% extends 'libros/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h4>Escanear ISBN</h4>
+    <div class="mb-2 d-flex gap-2">
+      <label for="camera-select" class="form-label mb-0">Cámara:</label>
+      <select id="camera-select" class="form-select" style="max-width:320px;"></select>
+      <button id="start-scanner" class="btn btn-sm btn-primary">Iniciar</button>
+      <button id="stop-scanner" class="btn btn-sm btn-outline-secondary">Detener</button>
+      <button id="test-camera" class="btn btn-sm btn-outline-primary">Probar cámara</button>
+    </div>
+    <div id="reader" style="width:100%;"></div>
+    <div id="scanner-diagnostics" class="mt-2 small text-muted"></div>
+    <p class="text-muted">Permite usar la cámara del dispositivo móvil para detectar el código.</p>
+
+    <form id="isbn-form" method="post" action="{% url 'libros:add_by_isbn' %}">
+      {% csrf_token %}
+      <!-- Campo oculto que enviará el ISBN; mostramos un campo editable para feedback/manual -->
+      <input type="hidden" id="scanned-isbn" name="isbn">
+      <input type="text" id="scanned-isbn-display" class="form-control" placeholder="ISBN detectado o escribe aquí" />
+      <small class="text-muted">Puedes escribir el ISBN manualmente aquí o usar la cámara para escanearlo.</small>
+      <div class="mt-2">
+        <button type="submit" class="btn btn-primary">Agregar ISBN</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <h4>Agregar manualmente</h4>
+    <form method="post" action="{% url 'libros:add_manual' %}">
+      {% csrf_token %}
+      {{ manual_form.as_p }}
+      <button type="submit" class="btn btn-success">Agregar Libro</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+<script src="{% static 'libros/js/scanner.js' %}"></script>
+{% endblock %}
